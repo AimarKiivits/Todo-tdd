@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "expresss": "^0.0.0",
     "mongoose": "^8.4.0",
-    "node-mocks-http": "^1.14.1"
+    "node-mocks-http": "^1.14.1",
+    "supertest": "^7.0.0"
   },
   "devDependencies": {
     "jest": "^29.7.0"
