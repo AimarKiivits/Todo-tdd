@@ -2,7 +2,11 @@ const Todocontroller = require('../../controllers/todo.controller');
 const TodoModel = require('../../models/todo.model');
 const httpMocks = require('node-mocks-http');
 const newTodo = require('../mock-data/new-todo.json');
+const allTodos = require('../mock-data/all-todos.json');
+
+
 TodoModel.create = jest.fn();
+TodoModel.find = jest.fn();
 
 let req, res, next;
 beforeEach(() => {
@@ -39,6 +43,23 @@ describe('Todo Controller.createTodo', () => {
         TodoModel.create.mockReturnValue(rejectedPromise);
         await Todocontroller.createTodo(req, res, next);
         expect(next).toBeCalledWith(errorMessage);
+    })
+})
+
+describe('Todo Controller.getTodos', () => {
+    it('should have a getTodos function', () => {
+        expect(typeof Todocontroller.getTodos).toBe('function');
+    })
+    it('should call TodoModel.find({})', async () => {
+        await Todocontroller.getTodos(req, res, next);
+        expect(TodoModel.find).toHaveBeenCalledWith({});
+    })
+    it('should return response with status 200 and all todos', async () => {
+        TodoModel.find.mockReturnValue(allTodos);
+        await Todocontroller.getTodos(req, res, next);
+        expect(res.statusCode).toBe(200);
+        expect(res._isEndCalled()).toBeTruthy();
+        expect(res._getJSONData()).toStrictEqual(allTodos);
     })
 })
 
